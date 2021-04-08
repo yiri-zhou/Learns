@@ -69,18 +69,28 @@ UTF-16 有三类：
 - cp > 0xFFFF 的，需要先计算出高位字节 cu1，再计算出后低位字节 cu2，最后 cu1 和 cu2 组合在一起变成 UTF16 编码
 
 计算高位字节序 cu1：
-公式：cu1 = floor((cp - 0x10000) / 0x400) + 0xD800
+
+> 公式：cu1 = floor((cp - 0x10000) / 0x400) + 0xD800
 
 计算低位字节序 cu2：
-公式：cu2 = ((cp - 0x10000) modulo 0x400) + 0xDC00
+
+> 公式：cu2 = ((cp - 0x10000) modulo 0x400) + 0xDC00
 
 举个例子：以 U+1F625（😥）为例，
-cu1 = Math.floor((0x1F625 - 0x10000) / 0x400) + 0xD800 = 0xD83D
-cu2 = ((cp - 0x10000) % 0x400) + 0xDC00 = 0xDE25
+
+> cu1 = Math.floor((0x1F625 - 0x10000) / 0x400) + 0xD800 = 0xD83D
+> cu2 = ((cp - 0x10000) % 0x400) + 0xDC00 = 0xDE25
+
 所以 U+1F625 的 UTF-16 的大端字节序编码就是 0xFEFF D83D DE25，小端字节序编码是 0xFFFE 3DD8 25DE
 
 [Wiki UTF-16 解析规则](https://zh.wikipedia.org/wiki/UTF-16)
 
 ### 解码-Decode
 
-将 UTF-16 码点转换成 Unicode 码点就叫做 UTF-16 解码。
+将 UTF-16 码点转换成 Unicode 码点就叫做 UTF-16 解码。解码比编码要简单一些，可以直接使用公式计算。cp <= 0xFFFF 解码还是 cp。公式主要用于 UTF-16 编码大于 0xFFFF 的编码。
+
+解码公式：
+
+> cp = (cu1 - 0xD800) × 0x400 + (cu2 - 0xDC00) + 0x10000
+
+在 ECMA 文档中，解码的 cu1 和 cu2 叫做`lead`和`trail`，可以理解为高位字节和低位字节。
