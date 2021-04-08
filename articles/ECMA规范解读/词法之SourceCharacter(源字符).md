@@ -61,6 +61,8 @@ UTF-16 有三类：
 - 例如 UTF-16 大端字节序：0xFE FF 4E 45 18 34
 - 例如 UTF-16 小端字节序：0xFF FE 18 34
 
+UTF16 的字节序并不是简单的大端序和小端序之分，cp <= 0xFFFF 时，占 2 个字节，此时字节序的排列是以单个字节前后位置来判断的，例如：大端序存储 0x31FF，转为小端序则是 0xFF31。如果 cp > 0xFFFF，字节序就是使用混合序的，如：大端序 0xFEFF 0x4E45 0x1834，转为小端序则是 0xFFFE 0x454E 0x3418，高位 16bit 和低位 16bit 以大端序存储，但 16bit 内部以小端存储。
+
 ### 编码-Encoding
 
 将 Unicode 码点转换成 UTF-16 码点就叫做 UTF-16 编码。下文我们用 cp 来替换码点
@@ -96,5 +98,9 @@ UTF-16 有三类：
 在 ECMA 文档中，解码的 cu1 和 cu2 叫做`lead`和`trail`，可以理解为高位字节和低位字节。
 
 ## 其他链接
+
+[字节序](https://zh.wikipedia.org/wiki/%E5%AD%97%E8%8A%82%E5%BA%8F)
+
+[字节顺序标记 BOM](https://zh.wikipedia.org/wiki/%E4%BD%8D%E5%85%83%E7%B5%84%E9%A0%86%E5%BA%8F%E8%A8%98%E8%99%9F)
 
 [字符和字形](../杂项/字符和字形.md)
