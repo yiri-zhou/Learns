@@ -36,10 +36,6 @@ LF 和 CR 前面已经介绍过了，LF 的转义字符是：\n，CR 的转义�
 
 LS 的中文是行分隔符。PS 是段落分隔符。
 
-LS 效果图：
-
-PS 效果图：
-
 LS 和 PS 不常用，常用的是 LF 和 CR。
 
 ## LineTerminatorSequence
